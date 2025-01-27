@@ -6,7 +6,7 @@ const Navbar = () =>{
     return (
         <nav className={style.navbar}>
             <NavLink to="/" className={style.brand}>
-                mini<span>Blog</span>
+                dre<span>Lee</span>
             </NavLink>
             <ul className={style.links_list}>
                 <li>
