@@ -3,6 +3,7 @@ import styles from "./CreatePost.module.css"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthValue } from "../../context/AuthContext";
+import { useInsertDocument } from "../../hooks/useInsertDocument";
 
 const CreatePost = () => {
     const [produto, setProduto] = useState("");
@@ -11,9 +12,41 @@ const CreatePost = () => {
     const [tag, setTags] = useState([]);
     const [tamanho, setTamanho] = useState([]);
     const [formError, setFormError] = useState("");
+    const {user} = useAuthValue()
+    const {insertDocument, response} = useInsertDocument("posts")
+    const Navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setFormError("")
+
+        const tamanhoArray = tamanho.split(",").map((tamanho) => tamanho.trim().toLowerCase())
+        const tagArray = tag.split(",").map((tag) => tag.trim().toLowerCase());
+
+        if(!produto || !image || !tag || !body || !tamanho){
+            setFormError("campos incompletos ou em branco")
+        }        
+
+        try{
+            new URL(image);
+        }catch(error){
+            setFormError("a imagem precisa de uma URL")
+        }
+
+        if(formError)
+            return;
+
+        insertDocument({
+            produto,
+            image,
+            body,
+            tagArray,
+            tamanhoArray,
+            uid: user.uid,
+            createBy: user.displayName
+        } 
+        )
+        Navigate("/")
     };
     return(
 
@@ -43,12 +76,13 @@ const CreatePost = () => {
                     <span>Tamanhos</span>
                     <input type="text" name="tamanho" required placeholder="tamanhos da roupa " onChange={(e) => setTamanho(e.target.value)} value={tamanho}></input>
                 </label>
-                <button className="btn">Registar produto</button>
-                {/*
-                {!loading && <button className="btn" >Registrar produto</button>}
-                {loading && (<button className="btn" disabled>Aguarde...</button>)}
-                {error && <p className="error">{error}</p>}
-                 */}
+                
+                
+                {!response.loading && <button className="btn" >Registrar produto</button>}
+                {response.loading && (<button className="btn" disabled>Aguarde...</button>)}
+                {response.error && <p className="error">{response.error}</p>}
+                {formError && <p className="error">{formError}</p>}
+                 
             </form>
         
     </div>
