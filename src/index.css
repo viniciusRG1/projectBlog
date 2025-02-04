@@ -67,6 +67,7 @@ input,textarea {
   border: none;
   padding: 10px 15px;
   font-size: 1em;
+  margin-top: 1em;
 }
 
 .btn.btn-dark{
