@@ -21,11 +21,12 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
                 let q;
                 q = await query(collectionRef, orderBy("createdAt", "desc"));
                 await onSnapshot(q, (querySnapshot)=> {
-                    setDocuments(querySnapshot.docs.map((doc)=>({
-                        id: doc.id,
-                        ...doc.data(),
-                    }))
-                );
+                    setDocuments(
+                        querySnapshot.docs.map((doc) => ({
+                            id: doc.id,
+                            ...doc.data(),
+                        }))
+                    );
                 });
 
                 setLoading(false);

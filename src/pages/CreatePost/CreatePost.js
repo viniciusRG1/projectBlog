@@ -35,7 +35,6 @@ const CreatePost = () => {
 
         if(formError)
             return;
-
         insertDocument({
             produto,
             image,

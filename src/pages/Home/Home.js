@@ -1,5 +1,5 @@
 import styles from "./Home.module.css"
-import {useNavigate, Link} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 import {useState} from "react"
 import { useFetchDocuments } from "../../hooks/useFetchDocuments"
 import PostDetail from "../../components/PostDetail"
@@ -9,7 +9,7 @@ import PostDetail from "../../components/PostDetail"
 const Home = () => {
 
     const [query, setQuery] = useState("")
-    const {documents: post, loading} = useFetchDocuments("posts")
+    const {documents: posts, loading} = useFetchDocuments("posts")
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -27,10 +27,10 @@ const Home = () => {
             </form>
             <h1>
                 {loading && <p>Carregando...</p>}
-                {post && post.map((post)=>(
-                    <PostDetail key={post.id} post={post} />
+                {posts && posts.map((posts)=>(
+                    <PostDetail key={posts.id} post={posts} />
                 ))}
-                {post && post.length === 0 && (
+                {posts && posts.length === 0 && (
                     <div className={styles.nopost}>
                         <p>não temos essa variedade de roupa no momento</p>
                         <p>por favor falar com o atendente para mais informações</p>
